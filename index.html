@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<title>test</title>
+	<link rel="stylesheet" href="./styles.css">
+</head>
+<body>
+	 <div class="container">
+
+
+	 	<!-- <div id="target" class="hidden">
+		  thông báo
+		</div> -->
+
+	 	<form id="uploadForm" class="form-upload">
+		 	<div class="image-upload-wrap" id="bgUpload">
+				<input class="file-upload-input" type="file" id="imageInput" accept="image/*" required/>
+				<div class="drag-text">
+					<h3 id="textFile">Kéo ảnh mã QR vào hoặc ấn tải mã QR lên</h3>
+				</div>
+			</div>
+			<div class="btn-wrapper">
+				<button class="btn-reset" type="button" id="resetBtn" disabled>Tải QR Mới</button>
+				<button class="btn-submit" type="submit" id="submitBtn">Ghép QR vào ảnh</button>
+			</div>
+		</form>
+	 	
+	 	<div id="main-card" class="main-image">
+	 		<img alt="image" src="./images/main.jpg">
+	 		<div class="qr-code" id="preview">
+	 			
+	 		</div>
+	 	</div>
+
+
+
+	 </div>
+	   <script>
+	    const form = document.getElementById("uploadForm");
+	    const text = document.getElementById("textFile");
+	    const bgUpload = document.getElementById("bgUpload");
+	    const imageInput = document.getElementById("imageInput");
+	    const resetBtn = document.getElementById("resetBtn");
+	    const submitBtn = document.getElementById("submitBtn");
+	    const previewDiv = document.getElementById("preview");
+	    const el = document.getElementById('target');
+	    const mainCard = document.getElementById('main-card');
+
+	    imageInput.addEventListener("change", () => {
+		  const file = imageInput.files[0];
+		  if (!file) return;
+		  textFile.innerHTML = "Đã tải lên QR"
+		  bgUpload.style.backgroundColor = "#b2b2b2"
+		  bgUpload.style.borderColor = "#ffffff"
+		  text.style.color = "#ffffff"
+  		});
+
+
+	    form.addEventListener("submit", function (e) {
+	      e.preventDefault(); // không reload trang
+
+	      const file = imageInput.files[0];
+	      if (!file) return;
+
+	      const reader = new FileReader();
+
+	      reader.onload = function (event) {
+
+	        previewDiv.innerHTML = ""; // xóa nội dung cũ
+	        // textFile.innerHTML = "Đã tải lên QR, ấn (Ghép QR vào ảnh)"
+	        const img = document.createElement("img");
+	        img.src = event.target.result;
+
+	        previewDiv.appendChild(img);
+	      };
+
+	      reader.readAsDataURL(file);
+	       // Bật nút Reset
+		  resetBtn.disabled = false;
+	      submitBtn.disabled = true;
+
+	    });
+
+	     // 👉 RESET FORM
+		  resetBtn.addEventListener("click", () => {
+		    form.reset(); // reset input file
+
+		    textFile.innerHTML = "Kéo ảnh mã QR vào hoặc ấn tải mã QR lên";
+		    bgUpload.style.backgroundColor = ""; // về mặc định
+		    previewDiv.innerHTML = ""; // xóa ảnh preview
+
+		  // Tắt nút Reset trở lại
+		  resetBtn.disabled = true;
+		  submitBtn.disabled = false;
+		  bgUpload.style.backgroundColor = "#ffffff"
+		  bgUpload.style.borderColor = "#C80C0C"
+		  text.style.color = "#C80C0C"
+		  });
+
+
+		// 	function checkTimeAndUpdateClass() {
+		// 		const targetDate = new Date('2026-01-01T00:00:00');
+		// 		const now = new Date();
+
+		// 		if (now >= targetDate) {
+		// 		const el = document.getElementById('target');
+		// 		if (el) {
+		// 		el.classList.add('notification');
+		// 		el.classList.remove('hidden');
+		// 		uploadForm.classList.add('hidden');
+		// 		mainCard.classList.add('hidden');
+		// 		mainCard.innerHTML =""
+		// 		uploadForm.innerHTML = ""
+		// 		}
+		// 		clearInterval(timer);
+		// 		}
+		// 	}
+
+		  // // Kiểm tra mỗi giây
+		  // const timer = setInterval(checkTimeAndUpdateClass, 1000);
+
+		  // // Chạy ngay khi load trang (phòng trường hợp load sau thời điểm đó)
+		  // checkTimeAndUpdateClass();
+	  </script>
+
+</body>
+</html>
